@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Virtual de Becas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 20px;
+        }
+
+        .container h1 {
+            color: #0078d7;
+        }
+
+        .container p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .btn-close {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-close:hover {
+            background-color: #c9302c;
+        }
+
+        .logo {
+            margin-bottom: 15px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #039adbbe;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://cdn2.hubspot.net/hubfs/263750/call-center-robots.png" alt="Logo de Becas" class="logo">
+        <h1>¡Bienvenid@! 👋</h1>
+        <p>
+            Soy tu Asistente Virtual de Becas. Estoy aquí para ayudarte a descubrir las mejores oportunidades disponibles. 🎓
+        </p>
+        <button id="reiniciarChat" class="btn-close">Cerrar Chat</button>
+    </div>
+
+    <!-- Watson Assistant Chat -->
+    <div id="chat-container"></div>
+
+    <script>
+        window.watsonAssistantChatOptions = {
+            integrationID: "59685c4c-a94f-422f-826e-1d0df3686ad1", // El ID de tu integración
+            region: "au-syd", // La región de tu integración
+            serviceInstanceID: "2f71b296-ef4d-4f29-a500-165db18b1d44", // El ID de tu instancia del servicio
+            onLoad: async (instance) => { 
+                webChatInstance = instance;
+                await instance.render(); // Asegúrate de que el chat se renderice correctamente
+            }
+        };
+
+        setTimeout(function(){
+            const t = document.createElement('script');
+            t.src = "https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+            document.head.appendChild(t);
+        });
+
+        let webChatInstance;
+
+        // Función para cerrar el chat
+        function cerrarChat() {
+            if (webChatInstance) {
+                webChatInstance.destroy(); // Destruye la instancia del chat
+                webChatInstance.destroySession(); // Elimina la sesión activa
+                location.reload(); // Recarga la página para reiniciar el chat
+            } else {
+                console.log("No se pudo cerrar el chat.");
+            }
+        }
+
+        // Asociamos la función cerrarChat al botón de "Cerrar Chat"
+        document.getElementById("reiniciarChat").addEventListener("click", cerrarChat);
+    </script>
+</body>
+</html>
